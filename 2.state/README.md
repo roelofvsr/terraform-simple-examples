@@ -1,6 +1,6 @@
 ## State
 1. [Multi-state](#multi-state)
-2. [Data-remote-state](#data-remote-state)
+2. [Data-terraform-remote-state](#data-terraform-remote-state)
 3. [ci-cd](#ci-cd)
 <br></br>
 
@@ -12,7 +12,7 @@ You could use both state files and workspaces, but this this will be more comple
 <br></br>
 
 
-### Data-remote-state
+### Data-terraform-remote-state
 The data source `terraform_remote_state` can be convenient, but is also risky. Since statefile exposes secrets, sharing state is a bad idea. The only way that it makes sense is within the same project and you have to communicate variable between projects. 
 See [here](./2.data-remote-state/) for an example.
 

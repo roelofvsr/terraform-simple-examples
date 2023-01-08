@@ -1,8 +1,16 @@
-## State
-1. [Multi-state](#multi-state)
-2. [Data-remote-state](#data-remote-state)
+## Testing
+1. [Validating-variables](#validating-variables)
+2. [Testing-terratest](#Testing-terratest)
 3. [ci-cd](#ci-cd)
 <br></br>
 
 
-### Multi-state
+### Validating-variables
+<br></br>
+
+
+### Testing-terratest
+<br></br>
+
+
+### ci-cd

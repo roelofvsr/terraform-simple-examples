@@ -1,5 +1,5 @@
 # terraform-examples
-Simple patterns for making complex infrastructure deployed through Terraform a bit easier
+Simple patterns for making complex infrastructure deployed with Terraform a bit easier
 
 Each subfolder contains a README.md
 
