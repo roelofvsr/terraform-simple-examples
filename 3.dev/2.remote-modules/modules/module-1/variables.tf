@@ -1,1 +1,1 @@
-varialbe "input" {}
+variable "input" {}
