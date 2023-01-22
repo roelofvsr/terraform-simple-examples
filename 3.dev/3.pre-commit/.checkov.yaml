@@ -1,0 +1,25 @@
+---
+block-list-secret-scan: []
+branch: main
+download-external-modules: false
+evaluate-variables: true
+external-modules-download-path: .external_modules
+framework:
+- all
+secrets-scan-file-type: []
+skip-check:
+- CKV_AZURE_158
+- CKV_AZURE_109
+- CKV_AZURE_23
+- CKV_AZURE_24
+- CKV2_AZURE_18
+- CKV2_AZURE_1
+- CKV_AZURE_43
+- CKV2_AZURE_21
+- CKV_AZURE_34
+- CKV2_AZURE_8
+- CKV_AZURE_189
+- CKV_AZURE_59
+- CKV_AZURE_197
+- CKV_AZURE_190
+summary-position: top

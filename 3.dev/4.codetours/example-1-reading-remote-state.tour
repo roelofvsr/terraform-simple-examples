@@ -1,0 +1,41 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "example-1-reading-remote-state",
+  "steps": [
+    {
+      "file": "2.state/2.data-terraform-remote-state/project-1/main.tf",
+      "description": "project 1 has a simple hardcoded variable",
+      "line": 1
+    },
+    {
+      "file": "2.state/2.data-terraform-remote-state/project-1/main.tf",
+      "description": "The variable is added to the outputs of project 1",
+      "line": 4
+    },
+    {
+      "file": "2.state/2.data-terraform-remote-state/project-1/main.tf",
+      "description": "Initiate project-1 first in order for the outputs to become available",
+      "line": 8
+    },
+    {
+      "file": "2.state/2.data-terraform-remote-state/project-2/main.tf",
+      "description": "Now initiate project-2, and read the remote state outputs using this data resource",
+      "line": 2
+    },
+    {
+      "file": "2.state/2.data-terraform-remote-state/project-2/main.tf",
+      "description": "You can use the outputs of project-1 inside project-2 now",
+      "line": 22
+    },
+    {
+      "file": "2.state/2.data-terraform-remote-state/project-2/main.tf",
+      "description": "Optionally you can also read back outputs from project-2 into project 1. However there is a circular dependency here, so one of the projects needs to be initiated successfully first",
+      "line": 9
+    },
+    {
+      "file": "2.state/2.data-terraform-remote-state/project-1/main.tf",
+      "description": "uncomment these lines in order to read variables from project-2 back into project-1 as well, \nAlso note that this is also possible with remote state\nDone !",
+      "line": 20
+    }
+  ]
+}

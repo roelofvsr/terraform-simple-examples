@@ -1,0 +1,8 @@
+parameter1 = "everything needs to be placed in *.tfvars - DEV"
+parameter2 = "everything needs to be placed in *.tfvars - DEV"
+parameter3 = "everything needs to be placed in *.tfvars - DEV"
+parameter4 = "everything needs to be placed in *.tfvars - DEV"
+parameter5 = "everything needs to be placed in *.tfvars - DEV"
+parameter6 = "everything needs to be placed in *.tfvars - DEV"
+parameter7 = "everything needs to be placed in *.tfvars - DEV"
+parameter8 = "everything needs to be placed in *.tfvars - DEV"

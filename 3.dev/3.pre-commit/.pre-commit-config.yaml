@@ -1,0 +1,20 @@
+---
+# note: validate will not work due to remote state and remote modules
+repos:
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.74.1  # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_docs
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: "2.2.229"
+    hooks:
+      - id: checkov
+        args: [--quiet]
+        files: ^src/
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.28.0
+    hooks:
+      - id: yamllint
+        args: [-c=.yamllint]
+        types: [file, yaml]
