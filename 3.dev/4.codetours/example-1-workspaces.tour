@@ -1,0 +1,21 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "example-1-workspaces",
+  "steps": [
+    {
+      "file": "3.dev/1.workspaces/variable-selection.tf",
+      "description": "This an output variable; placed here as an example to show the current workspace",
+      "line": 3
+    },
+    {
+      "file": "3.dev/1.workspaces/variable-selection.tf",
+      "description": "This is a map variable that has configuration for multiple different workspace names",
+      "line": 12
+    },
+    {
+      "file": "3.dev/1.workspaces/variable-selection.tf",
+      "description": "The null resource that is created select the correct config on the basis of the workspace variable, which selects the correct config from the mapped variable\nDone !",
+      "line": 29
+    }
+  ]
+}

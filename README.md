@@ -1,7 +1,6 @@
 # terraform-examples
-Simple patterns for making complex infrastructure deployed with Terraform a bit easier
-
-Each subfolder contains a README.md
+Simple patterns for making complex infrastructure deployed with Terraform a bit easier.
+Each sub folder contains a README.md
 
 [1.parameters](./1.parameters/README.md)
 

@@ -1,0 +1,92 @@
+# These snippets can be integrated in a yaml pipeline.
+# Some steps have dependencies; like a variable group or a custom script.
+
+########################################################
+############## Example of application policy checker(s)
+########################################################
+# Note that junitxml is able to integrate into AzureDevOps and show the test on the overview page of the pipeline
+- bash: pip3 install checkov
+  displayName: "Install checkov"
+  name: checkov
+
+- bash: checkov --soft-fail -d . -o junitxml > $(System.DefaultWorkingDirectory)/checkov-report.xml
+  displayName: "Run checkov"
+  workingDirectory: $(workdir)
+
+########################################################
+############## Example of execution of tests
+########################################################
+- deployment: "Test"
+  variables:
+    - group: general
+    - group: group-${{ parameters.environment}}
+  displayName: Test
+  environment: ${{ parameters.environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+          - checkout: self
+
+          - task: TerraformInstaller@0
+            displayName: install_terraform
+            inputs:
+              terraformVersion: $(tfversion)
+              azureSubscription: $(serviceConnectionName)
+
+          - bash: |
+              ../scripts/go-test.sh
+              exec 0<&-
+            displayName: Terraform Test
+            workingDirectory: ./tests
+
+########################################################
+############## Example of reporting
+########################################################
+# Note that this snippet makes use of a shell script
+# This shell script is simply a collection of a couple of 'az devops' cli commands to 
+# update the wiki connected to an Azure Dev/Ops project. 
+# see [here](https://learn.microsoft.com/en-us/cli/azure/devops/wiki?view=azure-cli-latest)
+  displayName: Reporting
+  dependsOn: terraform_apply
+  condition: always()
+  variables:
+    - group: general
+    - group: group-${{ parameters.environment}}
+  environment: ${{ parameters.environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+          - checkout: self
+
+          # 1. DOWNLOAD PLAN
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'plan'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          # 2. UPDATE PLAN
+          - script: |
+              terraform show -json $(System.ArtifactsDirectory)/plan/tfplan > tfplan.json
+              cat $(System.ArtifactsDirectory)/plan/tfplan.txt | grep -E 'Plan' > one_line_summary
+              echo "Source branch: " $(Build.SourceBranch) >> one_line_summary
+              ../scripts/update-wiki.sh $(wiki_path)${{ parameters.environment }} one_line_summary "true"
+            condition: ${{ eq(parameters['terraform_action'], 'plan') }}
+            workingDirectory: $(workdir)
+            displayName: "Updating Plan wiki page"
+            env:
+              AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+          # 3. UPDATE APPLY if executed
+          - script: |
+              terraform show -json $(System.ArtifactsDirectory)/plan/tfplan > tfplan.json
+              cat $(System.ArtifactsDirectory)/plan/tfplan.txt | grep -E 'Plan' > one_line_summary
+              echo "Source branch: " $(Build.SourceBranch) >> one_line_summary
+              ../scripts/update-wiki.sh $(wiki_path)${{ parameters.environment }} one_line_summary "true"
+            condition: ${{ eq(parameters['terraform_action'], 'apply') }}
+            displayName: "Updating Apply wiki page"
+            env:
+              AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)

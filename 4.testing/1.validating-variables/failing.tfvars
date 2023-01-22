@@ -16,23 +16,23 @@ demographics = {
 }
 
 # failing on input
-complex = [ {
+complex = [{
   address = {
-    city = "value"
+    city   = "value"
     street = "value"
-    zip = 1
+    zip    = 1
   }
-  age = 1
+  age  = 1
   name = "value"
-} ]
+}]
 
 # failing on input: note that error message is less helpful
 instances = [
-    {
-        name = "instance1"
-        count = 3
-        tags = {
-          empty = ""
-        }
-    },
+  {
+    name  = "instance1"
+    count = 3
+    tags = {
+      empty = ""
+    }
+  },
 ]

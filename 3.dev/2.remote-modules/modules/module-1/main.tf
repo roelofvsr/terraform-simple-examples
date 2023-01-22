@@ -1,4 +1,4 @@
-resource "null_resource" "module-1" {
+resource "null_resource" "module-2" {
   triggers = {
     module-1 = "module-1"
   }

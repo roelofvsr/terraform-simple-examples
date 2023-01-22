@@ -55,21 +55,21 @@ variable "complex" {
 # validation in a looped manner, source:
 #https://andyhunt.me/til/2021/03/04/you-can-fully-validate-a-complex-input-object-in-terraform/
 variable "instances" {
-    type = list(object({
-        name = string
-        count = number
-        tags = map(string)
-    }))
+  type = list(object({
+    name  = string
+    count = number
+    tags  = map(string)
+  }))
 
-    validation {
-        condition = (
-            alltrue([for instance in var.instances : (
-                length(instance.name) > 0
-                && (instance.count % 3) == 0
-                && lookup(instance.tags, "business_unit", null) != null
-            )])
-        )
-        error_message = "Validation of an object failed"
-    }
+  validation {
+    condition = (
+      alltrue([for instance in var.instances : (
+        length(instance.name) > 0
+        && (instance.count % 3) == 0
+        && lookup(instance.tags, "business_unit", null) != null
+      )])
+    )
+    error_message = "Validation of an object failed"
+  }
 }
 

@@ -1,0 +1,94 @@
+---
+# This template shows a simple terraform plan and apply structure
+# using input parameters for 'environment' and 'terraform action' 
+# it also shows the difference between a regular job and deployment job
+
+parameters:
+- name: action
+  displayName: Terraform action
+  type: string
+  default: plan
+  values:
+    - plan
+    - apply
+- name: environment
+  displayName: Environment
+  type: string
+  default: dev
+  values:
+    - dev
+    - acc
+    - prod
+
+variables:
+  - name: workdir
+    value: ./src
+
+jobs:
+- job: terraform_plan
+  displayName: Plan
+  steps:
+  - checkout: self
+
+  - bash: |
+      terraform init -var-file=config/${{ parameters.environment }}.tfvars \
+      -backend-config="storage_account_name=tfstate" \
+      -backend-config="container_name=tfstate" \
+      -backend-config="resource_group_name=rg-tfstate" \
+      -backend-config="key=dev.tfstate" \
+      -upgrade
+    displayName: Terraform Init
+    workingDirectory: ${{ variables.workdir }}
+
+  - bash: terraform validate
+    displayName: Terraform Validate
+    workingDirectory: ${{ variables.workdir }}
+
+  - bash: terraform plan -no-color -var-file=config/${{ parameters.environment }}.tfvars
+      -out=$(Build.ArtifactStagingDirectory)/tfplan | tee $(Build.ArtifactStagingDirectory)/tfplan.txt
+    displayName: Terraform Plan
+    workingDirectory: ${{ variables.workdir }}
+    env:
+      ARM_TENANT_ID: $(tenant_id)
+      ARM_SUBSCRIPTION_ID: $(subscription_id)
+      ARM_CLIENT_ID: $(sp_id)
+      ARM_CLIENT_SECRET: $(sp_secret)
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: plan
+
+# example of a deployment job: it is best practice to not mix deployment and regular jobs in one ci-cd pipeline:
+# use either all deployment jobs or all regular jobs, this deployment job is here as an example.
+- deployment: terraform_apply
+  displayName: Apply
+  dependsOn: terraform_plan
+  condition: ${{ eq(parameters['action'], 'apply') }}
+  variables:
+    - name: workdir
+      value: ./src
+  environment: ${{ parameters.environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+          - checkout: self
+          
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'plan'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - bash: |
+              echo 'terraform apply $(System.ArtifactsDirectory)/plan/tfplan'
+              echo 'example command'
+            workingDirectory: ${{ variables.workdir }}
+            displayName: Terraform Apply
+            env:
+              ARM_TENANT_ID: $(tenant_id)
+              ARM_SUBSCRIPTION_ID: $(subscription_id)
+              ARM_CLIENT_ID: $(sp_id)
+              ARM_CLIENT_SECRET: $(sp_secret)

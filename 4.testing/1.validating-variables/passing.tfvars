@@ -37,25 +37,25 @@ complex = [{
 ]
 
 instances = [
-    {
-        name = "instance1"
-        count = 3
-        tags = {
-            business_unit = "BU1"
-        }
-    },
-    {
-        name = "instance2"
-        count = 6
-        tags = {
-            business_unit = "BU2"
-        }
-    },
-    {
-        name = "instance3"
-        count = 9
-        tags = {
-            business_unit = "BU3"
-        }
+  {
+    name  = "instance1"
+    count = 3
+    tags = {
+      business_unit = "BU1"
     }
+  },
+  {
+    name  = "instance2"
+    count = 6
+    tags = {
+      business_unit = "BU2"
+    }
+  },
+  {
+    name  = "instance3"
+    count = 9
+    tags = {
+      business_unit = "BU3"
+    }
+  }
 ]

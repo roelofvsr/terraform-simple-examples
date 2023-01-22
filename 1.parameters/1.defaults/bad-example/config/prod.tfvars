@@ -1,0 +1,8 @@
+parameter1 = "everything needs to be placed in *.tfvars - PROD"
+parameter2 = "everything needs to be placed in *.tfvars - PROD"
+parameter3 = "everything needs to be placed in *.tfvars - PROD"
+parameter4 = "everything needs to be placed in *.tfvars - PROD"
+parameter5 = "everything needs to be placed in *.tfvars - PROD"
+parameter6 = "everything needs to be placed in *.tfvars - PROD"
+parameter7 = "everything needs to be placed in *.tfvars - PROD"
+parameter8 = "everything needs to be placed in *.tfvars - PROD"
