@@ -15,5 +15,3 @@ resource "null_resource" "count" {
     command = "echo ${local.names[count.index]}"
   }
 }
-
-
