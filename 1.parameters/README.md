@@ -8,7 +8,7 @@
 ### Defaults
 In a simple project three locations matter:
 
-<img src="../docs/1parameters1defaults-tree.png" alt="Example location of variables in simple tf project" width="350"/>
+<img src="../docs/terra-1.png" alt="Example location of variables in simple tf project" width="350"/>
 <br></br>
 
 Default values can help reduce the number of parameters that need to be passed to a module.

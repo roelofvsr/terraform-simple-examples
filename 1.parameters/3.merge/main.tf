@@ -1,3 +1,4 @@
+# example
 locals {
   some_default_values = {
     "default" = "value1"
@@ -30,4 +31,8 @@ resource "null_resource" "merge-example" {
   provisioner "local-exec" {
     command = "echo ${local.string_value}"
   }
+}
+
+output "merge-output" {
+  value = merge(local.some_default_values, var.custom-values)
 }

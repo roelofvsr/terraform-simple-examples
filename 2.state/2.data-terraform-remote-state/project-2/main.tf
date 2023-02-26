@@ -22,3 +22,7 @@ resource "null_resource" "multi-state" {
     command = "echo This is the local exec inside project 1, this is var from project-1 ${var.output-project-2} and this is var from project-1:" #${data.terraform_remote_state.project-2.outputs.output-project-1}"
   }
 }
+
+output "output-project-1-used-in-project-2" {
+  value = data.terraform_remote_state.project-2.outputs.output-project-1
+}
