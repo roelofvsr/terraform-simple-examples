@@ -3,15 +3,26 @@ variable "example_list" {
   type    = list(string)
   default = ["a", "b", "c"]
 }
-output "example_list_out" {
-  value = [for s in var.example_list : upper(s)]
+output "example_list_output_v" {
+  value = [for v in var.example_list : upper(v)]
 }
-output "example_list_out2" {
-  value = [for i, v in var.example_list : "${i} is ${v}"]
+#   + example_list_output_v  = [
+#       + "A",
+#       + "B",
+#       + "C",
+#     ]
+
+output "example_list_output_kv" {
+  value = [for k, v in var.example_list : "${k} is ${v}"]
 }
+# + example_list_output_kv = [
+#       + "0 is a",
+#       + "1 is b",
+#       + "2 is c",
+#     ]
 
 
-# complex for - 0
+# complex for - 1 - map
 variable "example_map" {
   type = map(string)
   default = {
@@ -20,15 +31,17 @@ variable "example_map" {
     cc = "c"
   }
 }
-output "example_map_out" {
+output "example_map_output_kv" {
   value = { for k, v in var.example_map : k => upper(v) }
 }
-# k = key 
-# v = value
+#  + example_map_output_kv  = {
+#       + aa = "A"
+#       + bb = "B"
+#       + cc = "C"
+#     }
 
-
-# complex for - 1
-variable "objects" {
+# complex for - 2 - map with objects
+variable "example_map_objects" {
   type        = list(any)
   description = "list of objects"
   default = [
@@ -46,13 +59,16 @@ variable "objects" {
     }
   ]
 }
-
-output "object2" {
-  value = var.objects[index(var.objects.*.id, "name2")]
+output "example_map_objects_output" {
+  value = var.example_map_objects[index(var.example_map_objects.*.id, "name2")]
 }
+# + example_map_objects_output = {
+#       + attribute = "a,b"
+#       + id        = "name2"
+#     }
 
 
-# complex for - 2
+# complex for - 3 - map with objects
 variable "overly_complex_object" {
   type        = map(any)
   description = "an object filled with lists of objects"
@@ -65,10 +81,6 @@ variable "overly_complex_object" {
       {
         id        = "name2"
         attribute = "a,b"
-      },
-      {
-        id        = "name3"
-        attribute = "d"
       }
     ]
     b = [
@@ -79,10 +91,6 @@ variable "overly_complex_object" {
       {
         id        = "name2"
         attribute = "a,b"
-      },
-      {
-        id        = "name3"
-        attribute = "d"
       }
     ]
     c = [
@@ -94,34 +102,26 @@ variable "overly_complex_object" {
         id        = "name2"
         attribute = "a,b"
       },
-      {
-        id        = "name3"
-        attribute = "d"
-      }
-    ]
-    d = [
-      {
-        id        = "name1"
-        attribute = "a"
-      },
-      {
-        id        = "name2"
-        attribute = "a,b"
-      },
-      {
-        id        = "name3"
-        attribute = "d"
-      }
     ]
   }
 }
-
-output "overly_complex_object2" {
+output "overly_complex_object_output" {
   value = var.overly_complex_object.a[index(var.overly_complex_object.a.*.id, "name2")]
 }
+# + overly_complex_object_output = {
+#       + attribute = "a,b"
+#       + id        = "name2"
+#     }
+output "overly_complex_object_output2" {
+  value = var.overly_complex_object.a[*].id
+}
+# + overly_complex_object_output2 = [
+#       + "name1",
+#       + "name2",
+#     ]
 
 
-# complex for - 3
+# complex for - 4 - map with objects
 variable "example_complex_map" {
   type = map(any)
   default = {
@@ -132,32 +132,37 @@ variable "example_complex_map" {
     }
   }
 }
-
-output "example_complex_map_out" {
+output "example_complex_map_output" {
   value = { for k, v in var.example_complex_map.team1 : k => upper(v) }
 }
-output "test" {
+# + example_complex_map_output    = {
+#       + aa = "A"
+#       + bb = "B"
+#       + cc = "C"
+#     }
+output "example_complex_map_output2" {
   value = var.example_complex_map.team1.aa
 }
+#  + example_complex_map_output2   = "a"
 
 
-# complex for - 4
+# complex for - 4 - output to files
 locals {
   all_teams = {
     team1 = {
       name      = "t1" # can be max 9 characters
       full_name = "team-one"
       tags = {
-        this = "data"
-        that = "data"
+        this = "tag1-team1"
+        that = "tag2-team1"
       }
     }
     team2 = {
       name      = "t2" # can be max 9 characters
       full_name = "team-two"
       tags = {
-        this = "data"
-        that = "data"
+        this = "tag1-team2"
+        that = "tag2-team2"
       }
     }
   }
@@ -169,3 +174,6 @@ resource "local_file" "loop-with-map" {
   content  = each.value.tags.this
   filename = "TEAM-${each.value.name}"
 }
+# this will results in 2 files
+# TEAM-t1 -> content: data
+# TEAM-t2 -> content: data

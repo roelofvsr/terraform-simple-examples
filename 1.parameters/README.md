@@ -57,5 +57,3 @@ Use the `module.output.output-name` in order to communicate variables between mo
 Use a conditional statement to make modules more flexible and deploy resources only when needed.
 
 See [here](./4.modules/conditional-components.tf) for an example.
-
-
