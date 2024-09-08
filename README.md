@@ -1,4 +1,5 @@
 # terraform-examples
+This repo accompanies the blog post on Substack [101 Terraform Patterns]()
 Simple patterns for making complex infrastructure deployed with Terraform a bit easier.
 Each sub folder contains a README.md
 
