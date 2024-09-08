@@ -37,7 +37,7 @@ output "z_test5_prod_team_emails" {
     for team, environments in local.env_settings : [
       for environment, settings in environments : [
         for _, emails in settings : [
-          for _, email in emails : environment == var.env ? email : null
+          for _, email in emails : environment == "prod" ? email : null
         ]
       ]
     ]
